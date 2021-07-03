@@ -33,7 +33,28 @@ public class FilmController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		return mv;
+	}
+	
+	@RequestMapping(path="AddFilm.do")
+	public ModelAndView addFilm(@RequestParam("title") String title, @RequestParam("languageId") int languageId) {
+		DatabaseAccessorObject db = new DatabaseAccessorObject();
+		ModelAndView mv = new ModelAndView();
+		Film film = new Film();
+		
+		film.setTitle(title);
+		film.setLanguageId(languageId);
+		
+		mv.setViewName("WEB-INF/filmAdded.jsp");
+		try {
+			mv.addObject("film", db.createFilm(film));
+		} catch (NumberFormatException e) {
+		
+			e.printStackTrace();
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
 		return mv;
 	}
 	

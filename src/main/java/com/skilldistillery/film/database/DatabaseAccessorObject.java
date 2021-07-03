@@ -228,17 +228,20 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film createFilm(Film film) throws SQLException {		
-		String sql = "INSERT INTO film (title, language_id) VALUES (?, 1)";
+		String sql = "INSERT INTO film (title, language_id) VALUES (?, ?)";
 		
 		Connection conn = null;
 
 		try {
 			conn = DriverManager.getConnection(URL, user, pass);
 			conn.setAutoCommit(false);
-
+			
 			PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
+			st.setString(1, film.getTitle());
+			st.setInt(2, film.getLanguageId());
+			
 			int uc = st.executeUpdate();
+			System.out.println(uc);
 			
 			// This is the error-handling code in case something goes wrong
 			if (uc != 1) {
@@ -261,6 +264,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("we done goofed!");
+			
+			return null; 
 		}
 		
 		
