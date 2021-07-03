@@ -5,11 +5,19 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>FILM MVC Y'all</title>
 </head>
 
 <body>
-	<h1>FILMS!</h1>
+	<h1>Welcome to our awesome film site!</h1>
+	
+	<h3>Enter film ID:</h3>
+	<form action="GetFilmData.do" method="GET">
+		ID#:
+		<input type="text" name="filmId" size="4"/> 
+		<input type="submit" value="Get Film Data" />
+	</form>
+	
 </body>
 
 </html>
