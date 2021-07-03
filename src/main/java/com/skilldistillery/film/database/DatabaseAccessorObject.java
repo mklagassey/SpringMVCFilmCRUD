@@ -308,20 +308,21 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	}
 
 	@Override
-	public boolean updateFilm(Film film) throws SQLException {
+	public Film updateFilm(Film film) throws SQLException {
 		Connection conn = null;
 		
 		  try {
 		    conn = DriverManager.getConnection(URL, user, pass);
 		    
 		    conn.setAutoCommit(false); // START TRANSACTION
-		    String sql = "UPDATE film SET title=? "
-		               + " WHERE id=?";
+		    String sql = "UPDATE film SET title=?, language_id=? WHERE id=?"; 
+		    
 		    PreparedStatement stmt = conn.prepareStatement(sql);
 		    
 		    stmt.setString(1, film.getTitle());  
-		    stmt.setInt(2, film.getiD());
-		    
+		    stmt.setInt(2, film.getLanguageId());
+		    stmt.setInt(3, film.getiD());
+		   
 		    int updateCount = stmt.executeUpdate();
 		    
 //		    if (updateCount == 1) {
@@ -347,9 +348,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		        System.err.println("Error trying to rollback");
 		      }
 		    }
-		    return false;
+		    return null;
 		  }
-		  return true;
+		  return film;
 	}
 
 	

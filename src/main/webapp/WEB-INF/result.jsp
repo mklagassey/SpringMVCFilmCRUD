@@ -21,6 +21,13 @@
 		<button> Delete </button>
 	</form>
 	
+	<form action="UpdateFilm.do" method="POST">
+		<input value="${film.iD}" type="hidden" name="id">
+		<input type="text" name="title" value="${film.title}"/> 
+		<input type="text" name="languageId" value="${film.languageId}"/> 
+		<button> Update </button>
+	</form>
+	
 	
 </body>
 </html>

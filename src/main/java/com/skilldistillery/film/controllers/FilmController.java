@@ -82,4 +82,25 @@ public class FilmController {
 		return mv;
 	}
 	
+	@RequestMapping(path="UpdateFilm.do")
+	public ModelAndView updateFilm(@RequestParam("title") String title, @RequestParam("id") int filmId, @RequestParam("languageId") int languageId) throws SQLException {
+		DatabaseAccessorObject db = new DatabaseAccessorObject();
+		ModelAndView mv = new ModelAndView();
+		Film film = db.findFilmById(filmId);
+		
+		film.setTitle(title);
+		film.setLanguageId(languageId);
+		
+		mv.setViewName("WEB-INF/filmUpdated.jsp");
+		try {
+			mv.addObject("film", db.updateFilm(film));
+		} catch (NumberFormatException e) {
+		
+			e.printStackTrace();
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+		return mv;
+	}
 }
