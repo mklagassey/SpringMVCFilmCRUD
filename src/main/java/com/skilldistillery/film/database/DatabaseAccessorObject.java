@@ -273,7 +273,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		return film;
 	}
 	
-	public boolean deleteFilm(Film film) {
+	public Film deleteFilm(Film film) {
 		  Connection conn = null;
 		
 		try {
@@ -290,7 +290,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		    if (uc != 1) {
 				System.err.println("We done goofed!");
 				conn.rollback();
-				return false;
+				return film;
 			}
 		    conn.commit();             // COMMIT TRANSACTION
 		  }
@@ -302,9 +302,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		        System.err.println("Error trying to rollback");
 		      }
 		    }
-		    return false;
+		    return film;
 		  }
-		  return true;
+		  return null;
 	}
 
 	@Override

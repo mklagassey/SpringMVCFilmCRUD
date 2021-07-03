@@ -14,14 +14,14 @@
 <body>
 
 	<c:choose>
-		<c:when test="${not empty film}">
+		<c:when test="${empty film}">
 			<ul>
-				<li>${film.title} Good job, Flavor Flav. The film was
-					successfully added.</li>
+				<li>Good job, Flavor Flav. The film was
+					successfully deleted.</li>
 			</ul>
 		</c:when>
 		<c:otherwise>
-			<p>Danger Will Robinson, the film was not added!</p>
+			<p>Danger Will Robinson, the film was not deleted!</p>
 		</c:otherwise>
 	</c:choose>
 	

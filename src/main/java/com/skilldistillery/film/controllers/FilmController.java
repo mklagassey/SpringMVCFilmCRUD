@@ -4,6 +4,7 @@ import java.sql.SQLException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,6 +56,29 @@ public class FilmController {
 		
 			e.printStackTrace();
 		}
+		return mv;
+	}
+	
+	@RequestMapping(path="DeleteFilm.do", method=RequestMethod.POST)
+	public ModelAndView deleteFilm(@RequestParam("id") int filmId) throws SQLException {
+		DatabaseAccessorObject db = new DatabaseAccessorObject();
+		ModelAndView mv = new ModelAndView();
+		Film film = db.findFilmById(filmId);
+		
+//		film.setTitle(title);
+//		film.setLanguageId(languageId);
+		
+		mv.setViewName("WEB-INF/filmDeleted.jsp");
+		mv.addObject("film", db.deleteFilm(film));
+		System.out.println(mv.toString());
+//		try {
+//		} catch (NumberFormatException e) {
+//		
+//			e.printStackTrace();
+//		} catch (SQLException e) {
+//		
+//			e.printStackTrace();
+//		}
 		return mv;
 	}
 	
