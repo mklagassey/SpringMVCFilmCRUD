@@ -19,6 +19,30 @@ public class FilmController {
 		return "WEB-INF/home.jsp";
 	}
 	
+	@RequestMapping(path = "GoToDisplayFilm.do"  )
+	public String cssHeaven() {
+		return "WEB-INF/displayFilm.jsp";
+	}
+	
+	@RequestMapping(path="GoToFilmDetails.do")
+	public ModelAndView goToFilmDetails(@RequestParam("filmId") int id) {
+		DatabaseAccessorObject db = new DatabaseAccessorObject();
+		ModelAndView mv = new ModelAndView();
+		System.out.println("the film id is: " + id);
+//		int num = Integer.parseInt(id);
+		mv.setViewName("WEB-INF/filmDetails.jsp");
+		try {
+			mv.addObject("film", db.findFilmById(id));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
 	@RequestMapping(path="GetFilmData.do")
 	public ModelAndView getFilmById(@RequestParam("filmId") int id) {
 		DatabaseAccessorObject db = new DatabaseAccessorObject();
@@ -27,6 +51,25 @@ public class FilmController {
 		mv.setViewName("WEB-INF/result.jsp");
 		try {
 			mv.addObject("film", db.findFilmById(id));
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return mv;
+	}
+	
+	@RequestMapping(path="GetByKeyword.do")
+	public ModelAndView getFilmByKeyword(@RequestParam("keyword") String keyword) {
+		DatabaseAccessorObject db = new DatabaseAccessorObject();
+		ModelAndView mv = new ModelAndView();
+//		int num = Integer.parseInt(id);
+		mv.setViewName("WEB-INF/result.jsp");
+		try {
+			mv.addObject("films", db.findFilmsBySearchString(keyword));
+			System.out.println(mv.toString());
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

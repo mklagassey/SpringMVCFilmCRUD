@@ -20,13 +20,27 @@
 		<input type="submit" value="Get Film Data" />
 	</form>
 	
+	<h3>Enter your search criteria:</h3>
+	<form action="GetByKeyword.do" method="GET">
+		Keyword:
+		<input type="text" name="keyword"/> 
+		<input type="submit" value="Search" />
+	</form>
+	
+		<h3>Enter new film data:</h3>
+	
 	<form action="AddFilm.do" method="POST">
 		Title:
 		<input type="text" name="title" value="title"/> 
 		Language ID:
 		<input type="text" name="languageId"/> 
-		<input type="submit" value="Get Title Data" />
+		<input type="submit" value="Add New Film" />
 	</form>
+	
+<!-- <h3>Push the button to go to fancy page:</h3>
+	<form action="GoToDisplayFilm.do" method="GET">
+		<input type="submit" value="GO!!!" />
+	</form> -->
 	
 	<ol>
 	

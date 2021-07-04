@@ -128,7 +128,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		List<Actor> aL = null;
 		Film film = null;
 
-		String sql = "SELECT * FROM film " + " WHERE description LIKE ? OR " + " title LIKE ?";
+		String sql = "SELECT * FROM film WHERE description LIKE ? OR title LIKE ?";
 		PreparedStatement stmt = conn.prepareStatement(sql);
 		stmt.setString(1, "%" + searchString + "%");
 		stmt.setString(2, "%" + searchString + "%");
