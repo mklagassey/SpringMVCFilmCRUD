@@ -28,5 +28,7 @@ public interface DatabaseAccessor {
 	
 	public Film updateFilm(Film film) throws SQLException;
 
+	int findLanguageByName(String langName) throws SQLException;
+
 
 }

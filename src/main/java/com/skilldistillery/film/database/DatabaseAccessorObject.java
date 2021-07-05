@@ -183,6 +183,25 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		return language;
 	}
+	
+	@Override
+	public int findLanguageByName(String langName) throws SQLException {
+		Connection conn = DriverManager.getConnection(URL, user, pass);
+		int langId = 0;
+
+		String sql = "SELECT id FROM language WHERE name=?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, langName);
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next()) {
+			langId = rs.getInt("id");
+		}
+		rs.close();
+		stmt.close();
+		conn.close();
+
+		return langId;
+	}
 
 	@Override
 	public String findCategoryById(int filmId) throws SQLException {
@@ -310,19 +329,29 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Film updateFilm(Film film) throws SQLException {
 		Connection conn = null;
+		int langId = findLanguageByName(film.getLanguageName()); 
 		
 		  try {
 		    conn = DriverManager.getConnection(URL, user, pass);
 		    
 		    conn.setAutoCommit(false); // START TRANSACTION
-		    String sql = "UPDATE film SET title=?, language_id=? WHERE id=?"; 
+		    String sql = "UPDATE film SET title=?, language_id=?, rental_duration=?, release_year=?, description=?, length=?, replacement_cost=?, "
+		    		+ "rating=?, special_features=? WHERE id=?"; 
 		    
 		    PreparedStatement stmt = conn.prepareStatement(sql);
 		    
 		    stmt.setString(1, film.getTitle());  
-		    stmt.setInt(2, film.getLanguageId());
-		    stmt.setInt(3, film.getiD());
-		   
+		    stmt.setInt(2, langId); 
+		    stmt.setInt(3, film.getRentalDuration());
+		    stmt.setInt(4, film.getReleaseYear());
+		    stmt.setString(5, film.getDescription());
+		    stmt.setInt(6, film.getLength());
+			stmt.setDouble(7, film.getReplacementCost());
+			stmt.setString(8, film.getRating());
+			stmt.setString(9, film.getSpecialFeatures());
+//			stmt.setString(10, film.getCategory());
+			stmt.setInt(10, film.getiD());		
+
 		    int updateCount = stmt.executeUpdate();
 		    
 //		    if (updateCount == 1) {

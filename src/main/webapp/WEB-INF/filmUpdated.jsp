@@ -25,7 +25,14 @@
 		</c:otherwise>
 	</c:choose>
 	
+
+		<p>
+			<a href="WEB-INF/result.jsp" class="btn btn-secondary" role="button">Back
+				Return to previous page</a>
+		</p>
+		
 </body>
 </html>
 
 
+	
