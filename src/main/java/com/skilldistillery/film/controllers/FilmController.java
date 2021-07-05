@@ -1,7 +1,6 @@
 package com.skilldistillery.film.controllers;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.skilldistillery.film.database.DatabaseAccessorObject;
-import com.skilldistillery.film.entities.Actor;
 import com.skilldistillery.film.entities.Film;
-import com.skilldistillery.film.entities.InventoryItem;
 
 @Controller
 public class FilmController {
@@ -80,15 +77,30 @@ public class FilmController {
 	}
 	
 	@RequestMapping(path="AddFilm.do")
-	public ModelAndView addFilm(@RequestParam("title") String title, @RequestParam("languageId") int languageId) {
+	public ModelAndView addFilm(@RequestParam("title") String title, 
+			@RequestParam("rentalDuration") int rentalDuration, @RequestParam("description") String description, @RequestParam("releaseYear") Integer releaseYear,
+			@RequestParam("rentalRate") double rentalRate, @RequestParam("length") Integer length, @RequestParam("replacementCost") double replacementCost, 
+			@RequestParam("rating") String rating, @RequestParam("specialFeatures") String specialFeatures, @RequestParam("languageName") String languageName, 
+			@RequestParam("category") String category) throws SQLException {
 		DatabaseAccessorObject db = new DatabaseAccessorObject();
 		ModelAndView mv = new ModelAndView();
 		Film film = new Film();
 		
 		film.setTitle(title);
-		film.setLanguageId(languageId);
+		film.setRentalRate(rentalRate);
+		film.setRentalDuration(rentalDuration);
+		film.setDescription(description);
+		film.setLength(length);
+		film.setReplacementCost(replacementCost);
+		film.setRating(rating);
+		film.setSpecialFeatures(specialFeatures);
+		film.setLanguageName(languageName);
+		film.setCategory(category);
+		film.setReleaseYear(releaseYear);		
 		
-		mv.setViewName("WEB-INF/filmAdded.jsp");
+		System.out.println(film.getCategory());
+		
+		mv.setViewName("WEB-INF/filmUpdated.jsp");
 		try {
 			mv.addObject("film", db.createFilm(film));
 		} catch (NumberFormatException e) {
@@ -106,26 +118,17 @@ public class FilmController {
 		DatabaseAccessorObject db = new DatabaseAccessorObject();
 		ModelAndView mv = new ModelAndView();
 		Film film = db.findFilmById(filmId);
-		
-//		film.setTitle(title);
-//		film.setLanguageId(languageId);
+	
 		
 		mv.setViewName("WEB-INF/filmDeleted.jsp");
 		mv.addObject("film", db.deleteFilm(film));
 		System.out.println(mv.toString());
-//		try {
-//		} catch (NumberFormatException e) {
-//		
-//			e.printStackTrace();
-//		} catch (SQLException e) {
-//		
-//			e.printStackTrace();
-//		}
+
 		return mv;
 	}
 	
 	@RequestMapping(path="UpdateFilm.do")
-	public ModelAndView updateFilm(@RequestParam("title") String title, @RequestParam("id") int filmId, @RequestParam("languageId") int languageId, 
+	public ModelAndView updateFilm(@RequestParam("title") String title, @RequestParam("id") int filmId, 
 			@RequestParam("rentalDuration") int rentalDuration, @RequestParam("description") String description, @RequestParam("releaseYear") Integer releaseYear,
 			@RequestParam("rentalRate") double rentalRate, @RequestParam("length") Integer length, @RequestParam("replacementCost") double replacementCost, 
 			@RequestParam("rating") String rating, @RequestParam("specialFeatures") String specialFeatures, @RequestParam("languageName") String languageName, 
@@ -135,7 +138,7 @@ public class FilmController {
 		Film film = db.findFilmById(filmId);
 		
 		film.setTitle(title);
-		film.setLanguageId(languageId);
+		film.setRentalRate(rentalRate);
 		film.setRentalDuration(rentalDuration);
 		film.setDescription(description);
 		film.setLength(length);
@@ -146,7 +149,7 @@ public class FilmController {
 		film.setCategory(category);
 		film.setReleaseYear(releaseYear);		
 		
-		System.out.println(film.getLanguageId());
+		System.out.println(film.getCategory());
 		
 		mv.setViewName("WEB-INF/filmUpdated.jsp");
 		try {
@@ -160,19 +163,6 @@ public class FilmController {
 		}
 		return mv;
 		
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	}
 }

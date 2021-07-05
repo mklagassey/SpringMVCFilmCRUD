@@ -222,6 +222,25 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		return category;
 	}
+	
+	@Override
+	public int findCategoryIdByName(String categoryName) throws SQLException {
+		Connection conn = DriverManager.getConnection(URL, user, pass);
+		int categoryId = 0;
+
+		String sql = "SELECT id FROM category WHERE name = ?";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, categoryName);
+		ResultSet rs = stmt.executeQuery();
+		while (rs.next()) {
+			categoryId = rs.getInt("id");
+		}
+		rs.close();
+		stmt.close();
+		conn.close();
+
+		return categoryId;
+	}
 
 	@Override
 	public List<InventoryItem> findInventoryByFilmId(int filmId) throws SQLException {
@@ -247,49 +266,91 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 	@Override
 	public Film createFilm(Film film) throws SQLException {		
-		String sql = "INSERT INTO film (title, language_id) VALUES (?, ?)";
-		
+//		String sql = "INSERT INTO film (title, language_id) VALUES (?, ?)";
 		Connection conn = null;
+		int langId = findLanguageByName(film.getLanguageName()); 
+		
+		  try {
+		    conn = DriverManager.getConnection(URL, user, pass);
+		    
+		    conn.setAutoCommit(false); // START TRANSACTION
+		    String sql = "INSERT INTO film (title, language_id, rental_duration, "
+		    		+ "release_year, description, length, replacement_cost, "
+		    		+ "rating, special_features, rental_rate) VALUES (?,?,?,?,?,?,?,?,?,?)"; 
+		    
+		    PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+		    
+		    stmt.setString(1, film.getTitle());  
+		    stmt.setInt(2, langId); 
+		    stmt.setInt(3, film.getRentalDuration());
+		    stmt.setInt(4, film.getReleaseYear());
+		    stmt.setString(5, film.getDescription());
+		    stmt.setInt(6, film.getLength());
+			stmt.setDouble(7, film.getReplacementCost());
+			stmt.setString(8, film.getRating());
+			stmt.setString(9, film.getSpecialFeatures());
+			stmt.setDouble(10, film.getRentalRate());
+//			stmt.setInt(11, film.getiD());		
+			
 
+		    int updateCount = stmt.executeUpdate();
+		     ResultSet keys = stmt.getGeneratedKeys();
+		     if (keys.next()) {
+		        int newFilmId = keys.getInt(1);
+		        film.setiD(newFilmId);
+		        createCategory(film);
+		    }
+		    
+		      conn.commit();           // COMMIT TRANSACTION
+//		    }
+		  } catch (SQLException sqle) {
+		    sqle.printStackTrace();
+		    if (conn != null) {
+		      try { conn.rollback(); } // ROLLBACK TRANSACTION ON ERROR
+		      catch (SQLException sqle2) {
+		        System.err.println("Error trying to rollback");
+		      }
+		    }
+		    return null;
+		  }
+		  return film;
+	}
+	
+	public boolean createCategory(Film film) throws SQLException {
+		  Connection conn = null;
+		  int categoryId = findCategoryIdByName(film.getCategory());
+		  System.out.println(film.getiD());
+		  
 		try {
-			conn = DriverManager.getConnection(URL, user, pass);
-			conn.setAutoCommit(false);
-			
-			PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			st.setString(1, film.getTitle());
-			st.setInt(2, film.getLanguageId());
-			
-			int uc = st.executeUpdate();
-			System.out.println(uc);
-			
-			// This is the error-handling code in case something goes wrong
-			if (uc != 1) {
-				System.err.println("We done goofed!");
+		    conn = DriverManager.getConnection(URL, user, pass);
+		    
+		    conn.setAutoCommit(false); // START TRANSACTION
+		    String sql = "INSERT INTO film_category (category_id, film_id) VALUES (?, ?)";
+		    
+		    PreparedStatement stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, categoryId);
+		    stmt.setInt(2, film.getiD());
+		    
+		    int uc = stmt.executeUpdate();
+		    
+		    if (uc != 1) {
+				System.err.println("We done goofed inside createCategory!");
 				conn.rollback();
-				return null;
+				return false;
 			}
-
-			System.out.println(uc + " film records created.");
-			
-			// Now get the auto-generated film IDs:
-			ResultSet keys = st.getGeneratedKeys();
-			// And print them out
-			while (keys.next()) {
-				film.setiD(keys.getInt(1)); 
-			}
-			
-			// Commit the transaction if everything went jake
-			conn.commit();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("we done goofed!");
-			
-			return null; 
-		}
-		
-		
-		return film;
+		    conn.commit();             // COMMIT TRANSACTION
+		  }
+		  catch (SQLException sqle) {
+		    sqle.printStackTrace();
+		    if (conn != null) {
+		      try { conn.rollback(); }
+		      catch (SQLException sqle2) {
+		        System.err.println("Error trying to rollback");
+		      }
+		    }
+		    return false;
+		  }
+		  return true;
 	}
 	
 	public Film deleteFilm(Film film) {
@@ -307,7 +368,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		    int uc = stmt.executeUpdate();
 		    
 		    if (uc != 1) {
-				System.err.println("We done goofed!");
+				System.err.println("We done goofed inside the deleteFilm!");
 				conn.rollback();
 				return film;
 			}
@@ -325,6 +386,43 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		  }
 		  return null;
 	}
+	
+	public boolean updateCategory(Film film) throws SQLException {
+		  Connection conn = null;
+		  int categoryId = findCategoryIdByName(film.getCategory());
+		  System.out.println(film.getiD());
+		  
+		try {
+		    conn = DriverManager.getConnection(URL, user, pass);
+		    
+		    conn.setAutoCommit(false); // START TRANSACTION
+		    String sql = "UPDATE film_category SET category_id=? WHERE film_id = ?";
+		    
+		    PreparedStatement stmt = conn.prepareStatement(sql);
+		    stmt.setInt(1, categoryId);
+		    stmt.setInt(2, film.getiD());
+		    
+		    int uc = stmt.executeUpdate();
+		    
+		    if (uc != 1) {
+				System.err.println("We done goofed inside updateCategory!");
+				conn.rollback();
+				return false;
+			}
+		    conn.commit();             // COMMIT TRANSACTION
+		  }
+		  catch (SQLException sqle) {
+		    sqle.printStackTrace();
+		    if (conn != null) {
+		      try { conn.rollback(); }
+		      catch (SQLException sqle2) {
+		        System.err.println("Error trying to rollback");
+		      }
+		    }
+		    return false;
+		  }
+		  return true;
+	}
 
 	@Override
 	public Film updateFilm(Film film) throws SQLException {
@@ -336,7 +434,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		    
 		    conn.setAutoCommit(false); // START TRANSACTION
 		    String sql = "UPDATE film SET title=?, language_id=?, rental_duration=?, release_year=?, description=?, length=?, replacement_cost=?, "
-		    		+ "rating=?, special_features=? WHERE id=?"; 
+		    		+ "rating=?, special_features=?, rental_rate=? WHERE id=?"; 
 		    
 		    PreparedStatement stmt = conn.prepareStatement(sql);
 		    
@@ -349,24 +447,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			stmt.setDouble(7, film.getReplacementCost());
 			stmt.setString(8, film.getRating());
 			stmt.setString(9, film.getSpecialFeatures());
-//			stmt.setString(10, film.getCategory());
-			stmt.setInt(10, film.getiD());		
+			stmt.setDouble(10, film.getRentalRate());
+			stmt.setInt(11, film.getiD());		
+			
+			updateCategory(film);
 
 		    int updateCount = stmt.executeUpdate();
 		    
-//		    if (updateCount == 1) {
-//		      // Replace film's list
-//		      sql = "DELETE FROM film WHERE id = ?";
-//		      stmt = conn.prepareStatement(sql);
-//		      stmt.setInt(1, film.getiD());
-//		      updateCount = stmt.executeUpdate();
-//		      sql = "INSERT INTO film_actor (film_id, actor_id) VALUES (?,?)";
-//		      stmt = conn.prepareStatement(sql);
-//		      for (Film film : film.getFilms()) {
-//		        stmt.setInt(1, film.getiD());
-//		        stmt.setInt(2, film.getiD());
-//		        updateCount = stmt.executeUpdate();
-//		      }
 		      conn.commit();           // COMMIT TRANSACTION
 //		    }
 		  } catch (SQLException sqle) {

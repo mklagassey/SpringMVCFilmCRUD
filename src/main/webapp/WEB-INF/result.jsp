@@ -12,108 +12,177 @@
 
 <body>
 
+                     
 	<c:choose>
-	<c:when test="${not empty film}">
-		<form action="UpdateFilm.do" method="POST">
-			<input value="${film.iD}" type="hidden" name="id">
-			Title <input type="text" name="title" value="${film.title}" />
-			Description <input type="text" name="description" value="${film.description}" />	
-			Release Year <input type="text" name="releaseYear" value="${film.releaseYear}" />
-		  <!--   Rating <input type="text" name="rating" value="${film.rating}" />--> 
-			Rental Rate <input type="text" name="rentalRate" value="${film.rentalRate}" />
-			Length <input type="text" name="length" value="${film.length}" />
-			Replacement Cost <input type="text" name="replacementCost" value="${film.replacementCost}" />
-			Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" />
-			Language ID <input type="text" name="languageId" value="${film.languageId}" />
-			Rental Duration <input type="text" name="rentalDuration" value="${film.rentalDuration}" />	
-		 <!--	Language Name <input type="text" name="languageName" value="${film.languageName}" />	-->
-			Category <input type="text" name="category" value="${film.category}" />	
-						
-			<section>
- 			 <h3>Cast:</h3>
- 			 <c:forEach var="actor" items="${film.actorList}">
-			<ul>
-			<li>${actor.firstName} ${actor.lastName}</li>
-			</ul>
-			</c:forEach>
-    		</section>
+		<c:when test="${not empty film}">
+			<form action="UpdateFilm.do" method="POST">
+				<input value="${film.iD}" type="hidden" name="id"> 
+				Title <input type="text" name="title" value="${film.title}" /> <br>
+				Description <input type="text" name="description" value="${film.description}" /><br>
+				Release Year <input type="text" name="releaseYear" value="${film.releaseYear}" /><br>
+				Rental Rate <input type="text" name="rentalRate" value="${film.rentalRate}" /> <br>
+				Length <input type="text" name="length" value="${film.length}" /> <br>
+				Replacement Cost <input type="text" name="replacementCost" value="${film.replacementCost}" /><br>
+				Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" /> <br>
+				Rental Duration <input type="text" name="rentalDuration" value="${film.rentalDuration}" /><br>
+				
+				<p>The category is: ${film.category}</p>
 
-<p> The film is currently rated ${film.rating} </p>
-
-  <label for="rating">Choose a Rating:</label>
-  <select name="rating" id="rating">
-    <option value="${film.rating}">${film.rating}</option>
-    <option value="G">G</option>
-    <option value="PG">PG</option>
-    <option value="PG13">PG13</option>
-    <option value="R">R</option>
-    <option value="NC17">NC17</option>
-  </select>
-  <br><br>
-  <input type="submit" value="Submit">
-
-<p >Click the "Submit" to update your movie. </p>
-
-
-<p> The film is currently rated ${film.languageName} </p>
-
-  <label for="language">Choose a Language:</label>
-  <select name="languageName" id="language">
-    <option value="${film.languageName}">${film.languageName}</option>
-    <option value="English">English</option>
-    <option value="Italian">Italian</option>
-    <option value="Japanese">Japanese</option>
-    <option value="Mandarin">Mandarin</option>
-    <option value="French">French</option>
-    <option value="German">German</option>
-  </select>
-  <br><br>
-
-    </form> 
-  	</c:when>
-  	
- 		<%-- 	 </ul>
-			</section> 
-			<p></p>	      	
-			<c:forEach var="actor" items="${film.actorList}">
-			<ul>
-			<li>${actor.firstName} ${actor.lastName}</li>
-			</ul>
-			</c:forEach>
-			</form> --%>
-	<c:otherwise>
-	<p>To change film information, please edit the fields below, and then press the "update" button. To delete, use the "delete" button. </p>
-	<c:forEach var="film" items="${films}">
-		<form action="UpdateFilm.do" method="POST">
-			<input value="${film.iD}" type="hidden" name="id">
-			Title <input type="text" name="title" value="${film.title}" />
-			Description <input type="text" name="description" value="${film.description}" />	
-			Release Year <input type="text" name="releaseYear" value="${film.releaseYear}" />
-			Rating <input type="text" name="rating" value="${film.rating}" />
-			Rental Rate <input type="text" name="rentalRate" value="${film.rentalRate}" />
-			Length <input type="text" name="length" value="${film.length}" />
-			Replacement Cost <input type="text" name="replacementCost" value="${film.replacementCost}" />
-			Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" />
-			Language ID <input type="text" name="languageId" value="${film.languageId}" />
-			Rental Duration <input type="text" name="rentalDuration" value="${film.rentalDuration}" />	
-			Language Name <input type="text" name="languageName" value="${film.languageName}" />	
-			Category <input type="text" name="category" value="${film.category}" />	
+				<label for="rating">Choose a new Category:</label> <select name="category" id="category">
+					<option value="${film.category}">${film.category}</option>
+					<option value="Action">Action</option>
+					<option value="Animation">Animation</option>
+					<option value="Children">Children</option>
+					<option value="Classics">Classics</option>
+					<option value="Comedy">Comedy</option>
+					<option value="Documentary">Documentary</option>
+					<option value="Drama">Drama</option>
+					<option value="Family">Family</option>
+					<option value="Foreign">Foreign</option>
+					<option value="Games">Games</option>
+					<option value="Horror">Horror</option>
+					<option value="Music">Music</option>
+					<option value="New">New</option>
+					<option value="Sci-Fi">Sci-Fi</option>
+					<option value="Sports">Sports</option>
+					<option value="Travel">Travel</option>
 					
-			<h3>Cast: </h3>
-			<c:forEach var="actor" items="${film.actorList}">
-			<ul>
-			<li>${actor.firstName} ${actor.lastName}</li>
-			</ul>
+				</select> <br>
+				<br>
+
+				<p>The film is currently rated ${film.rating}</p>
+
+				<label for="rating">Choose a new Rating:</label> <select name="rating" id="rating">
+					<option value="${film.rating}">${film.rating}</option>
+					<option value="G">G</option>
+					<option value="PG">PG</option>
+					<option value="PG13">PG13</option>
+					<option value="R">R</option>
+					<option value="NC17">NC17</option>
+				</select> <br>
+				<br>
+
+
+				<p>The film's language ID is: ${film.languageId}</p>
+
+				<label for="language">Choose a new Language:</label> <select name="languageName" id="language">
+					<option value="${film.languageName}">${film.languageName}</option>
+					<option value="English">English (1)</option>
+					<option value="Italian">Italian (2)</option>
+					<option value="Japanese">Japanese (3)</option>
+					<option value="Mandarin">Mandarin (4)</option>
+					<option value="French">French (5)</option>
+					<option value="German">German (6)</option>
+				</select> <br>
+				<br> 
+
+				<section>
+					<h4>Cast:</h4>
+					<c:forEach var="actor" items="${film.actorList}">
+						<ul>
+							<li>${actor.firstName} ${actor.lastName}</li>
+						</ul>
+					</c:forEach>
+				</section>
+				<p>Click the "Submit" to update your movie or use "DELETE FILM" to permanently remove film.</p>
+				<input type="submit" value="Submit"> 
+			</form>
+			<form action="DeleteFilm.do" method="POST">
+				<input value="${film.iD}" type="hidden" name="id">
+				<button>
+					<font color="red"><strong>DELETE FILM</strong></font>
+				</button>
+			</form>
+		</c:when>
+
+                    
+
+		<c:otherwise>
+			<p>To change film information, please edit the fields below, and
+				then press the "update" button. To delete, use the "delete" button.
+			</p>
+			<c:forEach var="film" items="${films}">
+				<form action="UpdateFilm.do" method="POST">
+				<input value="${film.iD}" type="hidden" name="id"> 
+				Title <input type="text" name="title" value="${film.title}" /> <br>
+				Description <input type="text" name="description" value="${film.description}" /><br>
+				Release Year <input type="text" name="releaseYear" value="${film.releaseYear}" /><br>
+				Rental Rate <input type="text" name="rentalRate" value="${film.rentalRate}" /> <br>
+				Length <input type="text" name="length" value="${film.length}" /> <br>
+				Replacement Cost <input type="text" name="replacementCost" value="${film.replacementCost}" /><br>
+				Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" /> <br>
+				Rental Duration <input type="text" name="rentalDuration" value="${film.rentalDuration}" /><br>
+				
+				<p>The category is: ${film.category}</p>
+
+				<label for="rating">Choose a new Category:</label> <select name="category" id="category">
+					<option value="${film.category}">${film.category}</option>
+					<option value="Action">Action</option>
+					<option value="Animation">Animation</option>
+					<option value="Children">Children</option>
+					<option value="Classics">Classics</option>
+					<option value="Comedy">Comedy</option>
+					<option value="Documentary">Documentary</option>
+					<option value="Drama">Drama</option>
+					<option value="Family">Family</option>
+					<option value="Foreign">Foreign</option>
+					<option value="Games">Games</option>
+					<option value="Horror">Horror</option>
+					<option value="Music">Music</option>
+					<option value="New">New</option>
+					<option value="Sci-Fi">Sci-Fi</option>
+					<option value="Sports">Sports</option>
+					<option value="Travel">Travel</option>
+					
+				</select> <br>
+				<br>
+
+				<p>The film is currently rated ${film.rating}</p>
+
+				<label for="rating">Choose a new Rating:</label> <select name="rating" id="rating">
+					<option value="${film.rating}">${film.rating}</option>
+					<option value="G">G</option>
+					<option value="PG">PG</option>
+					<option value="PG13">PG13</option>
+					<option value="R">R</option>
+					<option value="NC17">NC17</option>
+				</select> <br>
+				<br>
+
+
+				<p>The film's language ID is: ${film.languageId}</p>
+
+				<label for="language">Choose a new Language:</label> <select name="languageName" id="language">
+					<option value="${film.languageName}">${film.languageName}</option>
+					<option value="English">English (1)</option>
+					<option value="Italian">Italian (2)</option>
+					<option value="Japanese">Japanese (3)</option>
+					<option value="Mandarin">Mandarin (4)</option>
+					<option value="French">French (5)</option>
+					<option value="German">German (6)</option>
+				</select> <br>
+				<br> 
+
+				<section>
+					<h4>Cast:</h4>
+					<c:forEach var="actor" items="${film.actorList}">
+						<ul>
+							<li>${actor.firstName} ${actor.lastName}</li>
+						</ul>
+					</c:forEach>
+				</section>
+				<p>Click the "Submit" to update your movie or use "DELETE FILM" to permanently remove film.</p>
+				<input type="submit" value="Submit"> 
+			</form>
+			<form action="DeleteFilm.do" method="POST">
+				<input value="${film.iD}" type="hidden" name="id">
+				<button>
+					<font color="red"><strong>DELETE FILM</strong></font>
+				</button>
+			</form>
+				<hr size="" width="" color="">
 			</c:forEach>
-			<button>Update</button>
-		</form>
-		<form action="DeleteFilm.do" method="POST">
-			<input value="${film.iD}" type="hidden" name="id">
-			<button>Delete</button>
-		</form>
-		<hr size="" width="" color="">
-	</c:forEach>
-</c:otherwise>
-</c:choose>
+		</c:otherwise>
+	</c:choose>
 </body>
 </html>

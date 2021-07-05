@@ -30,5 +30,7 @@ public interface DatabaseAccessor {
 
 	int findLanguageByName(String langName) throws SQLException;
 
+	int findCategoryIdByName(String categoryName) throws SQLException;
+
 
 }
