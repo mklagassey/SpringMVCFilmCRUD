@@ -11,7 +11,6 @@
 </head>
 
 <body>
-
                      
 	<c:choose>
 		<c:when test="${not empty film}">
@@ -23,58 +22,77 @@
 				Rental Rate <input type="text" name="rentalRate" value="${film.rentalRate}" /> <br>
 				Length <input type="text" name="length" value="${film.length}" /> <br>
 				Replacement Cost <input type="text" name="replacementCost" value="${film.replacementCost}" /><br>
-				Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" /> <br>
+<!--  			Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" /> <br>     -->
 				Rental Duration <input type="text" name="rentalDuration" value="${film.rentalDuration}" /><br>
 				
-				<p>The category is: ${film.category}</p>
-
-				<label for="rating">Choose a new Category:</label> <select name="category" id="category">
-					<option value="${film.category}">${film.category}</option>
-					<option value="Action">Action</option>
-					<option value="Animation">Animation</option>
-					<option value="Children">Children</option>
-					<option value="Classics">Classics</option>
-					<option value="Comedy">Comedy</option>
-					<option value="Documentary">Documentary</option>
-					<option value="Drama">Drama</option>
-					<option value="Family">Family</option>
-					<option value="Foreign">Foreign</option>
-					<option value="Games">Games</option>
-					<option value="Horror">Horror</option>
-					<option value="Music">Music</option>
-					<option value="New">New</option>
-					<option value="Sci-Fi">Sci-Fi</option>
-					<option value="Sports">Sports</option>
-					<option value="Travel">Travel</option>
-					
-				</select> <br>
 				<br>
+				
+				<p>The current special features include: ${film.specialFeatures}</p>
+				<p><strong>-- Choose New Special Features --</strong></p>
+					<form action="WEB-INF/filmUpdated.jsp"> 
+						<input type="checkbox" id="special_feature_deleted_scenes" name="deleted_scenes" value="${film.specialFeatures}">
+						<label for="special_feature_deleted_scenes">Deleted Scenes</label><br>					
+						<input type="checkbox" id="special_feature_behind_the_scenes" name="behind_the_scenes" value="${film.specialFeatures}">
+						<label for="special_feature_behind_the_scenes">Behind the Scenes</label><br>				
+						<input type="checkbox" id="special_feature_trailers" name="trailers" value="${film.specialFeatures}">
+						<label for="special_feature_trailers">Trailers</label><br>					
+						<input type="checkbox" id="special_feature_commentaries" name="commentaries" value="${film.specialFeatures}">
+						<label for="special_feature_commentaries">Commentaries</label><br>	
+					</form> 
+					
+					<br>
+				
+				<p>The category is: ${film.category}</p>
+				<label for="rating" ><strong>-- Choose a New Category --</strong></label><br> 
+					<select name="category" id="category">
+						<option value="${film.category}">${film.category}</option>
+						<option value="Action">Action</option>
+						<option value="Animation">Animation</option>
+						<option value="Children">Children</option>
+						<option value="Classics">Classics</option>
+						<option value="Comedy">Comedy</option>
+						<option value="Documentary">Documentary</option>
+						<option value="Drama">Drama</option>
+						<option value="Family">Family</option>
+						<option value="Foreign">Foreign</option>
+						<option value="Games">Games</option>
+						<option value="Horror">Horror</option>
+						<option value="Music">Music</option>
+						<option value="New">New</option>
+						<option value="Sci-Fi">Sci-Fi</option>
+						<option value="Sports">Sports</option>
+						<option value="Travel">Travel</option>
+					</select> 
+					
+					<br>
 
 				<p>The film is currently rated ${film.rating}</p>
+				<label for="rating"><strong>-- Choose a New Rating --</strong></label><br> 
+					<select name="rating" id="rating">
+						<option value="${film.rating}">${film.rating}</option>
+						<option value="G">G</option>
+						<option value="PG">PG</option>
+						<option value="PG13">PG13</option>
+						<option value="R">R</option>
+						<option value="NC17">NC17</option>
+					</select> 
 
-				<label for="rating">Choose a new Rating:</label> <select name="rating" id="rating">
-					<option value="${film.rating}">${film.rating}</option>
-					<option value="G">G</option>
-					<option value="PG">PG</option>
-					<option value="PG13">PG13</option>
-					<option value="R">R</option>
-					<option value="NC17">NC17</option>
-				</select> <br>
-				<br>
-
+					<br>
 
 				<p>The film's language ID is: ${film.languageId}</p>
-
-				<label for="language">Choose a new Language:</label> <select name="languageName" id="language">
-					<option value="${film.languageName}">${film.languageName}</option>
-					<option value="English">English (1)</option>
-					<option value="Italian">Italian (2)</option>
-					<option value="Japanese">Japanese (3)</option>
-					<option value="Mandarin">Mandarin (4)</option>
-					<option value="French">French (5)</option>
-					<option value="German">German (6)</option>
-				</select> <br>
-				<br> 
+				<label for="language"><strong>-- Choose a New Language --</strong></label><br> 
+					<select name="languageName" id="language">
+						<option value="${film.languageName}">${film.languageName}</option>
+						<option value="English">English (1)</option>
+						<option value="Italian">Italian (2)</option>
+						<option value="Japanese">Japanese (3)</option>
+						<option value="Mandarin">Mandarin (4)</option>
+						<option value="French">French (5)</option>
+						<option value="German">German (6)</option>
+					</select> 
+				
+					<br>
+					<br> 
 
 				<section>
 					<h4>Cast:</h4>
@@ -84,7 +102,8 @@
 						</ul>
 					</c:forEach>
 				</section>
-				<p>Click the "Submit" to update your movie or use "DELETE FILM" to permanently remove film.</p>
+				<br>
+				<p>Click "Submit" to update your movie or use "DELETE FILM" to permanently remove the film.</p>
 				<input type="submit" value="Submit"> 
 			</form>
 			<form action="DeleteFilm.do" method="POST">
@@ -92,7 +111,12 @@
 				<button>
 					<font color="red"><strong>DELETE FILM</strong></font>
 				</button>
+				<br>
+			
 			</form>
+				<br>
+			<form action="home.do"><input type="submit" value="Return to the Previous Page"></form>
+				<br>
 		</c:when>
 
                     
@@ -110,58 +134,78 @@
 				Rental Rate <input type="text" name="rentalRate" value="${film.rentalRate}" /> <br>
 				Length <input type="text" name="length" value="${film.length}" /> <br>
 				Replacement Cost <input type="text" name="replacementCost" value="${film.replacementCost}" /><br>
-				Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" /> <br>
+<!-- 			Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" /> <br>        -->
 				Rental Duration <input type="text" name="rentalDuration" value="${film.rentalDuration}" /><br>
+				
+					<br>
+
+			<p>The current special features include: ${film.specialFeatures}</p>
+			<p><strong>-- Choose New Special Features --</strong></p>
+				<form action="WEB-INF/filmUpdated.jsp"> 
+					<input type="checkbox" id="special_feature_deleted_scenes" name="deleted_scenes" value="${film.specialFeatures}">
+					<label for="special_feature_deleted_scenes">Deleted Scenes</label><br>					
+					<input type="checkbox" id="special_feature_behind_the_scenes" name="behind_the_scenes" value="${film.specialFeatures}">
+					<label for="special_feature_behind_the_scenes">Behind the Scenes</label><br>				
+					<input type="checkbox" id="special_feature_trailers" name="trailers" value="${film.specialFeatures}">
+					<label for="special_feature_trailers">Trailers</label><br>					
+					<input type="checkbox" id="special_feature_commentaries" name="commentaries" value="${film.specialFeatures}">
+					<label for="special_feature_commentaries">Commentaries</label><br>	
+					</form> 
 				
 				<p>The category is: ${film.category}</p>
 
-				<label for="rating">Choose a new Category:</label> <select name="category" id="category">
-					<option value="${film.category}">${film.category}</option>
-					<option value="Action">Action</option>
-					<option value="Animation">Animation</option>
-					<option value="Children">Children</option>
-					<option value="Classics">Classics</option>
-					<option value="Comedy">Comedy</option>
-					<option value="Documentary">Documentary</option>
-					<option value="Drama">Drama</option>
-					<option value="Family">Family</option>
-					<option value="Foreign">Foreign</option>
-					<option value="Games">Games</option>
-					<option value="Horror">Horror</option>
-					<option value="Music">Music</option>
-					<option value="New">New</option>
-					<option value="Sci-Fi">Sci-Fi</option>
-					<option value="Sports">Sports</option>
-					<option value="Travel">Travel</option>
-					
-				</select> <br>
-				<br>
+				<label for="rating" ><strong>-- Choose a New Category --</strong></label><br> 
+					<select name="category" id="category">
+						<option value="${film.category}">${film.category}</option>
+						<option value="Action">Action</option>
+						<option value="Animation">Animation</option>
+						<option value="Children">Children</option>
+						<option value="Classics">Classics</option>
+						<option value="Comedy">Comedy</option>
+						<option value="Documentary">Documentary</option>
+						<option value="Drama">Drama</option>
+						<option value="Family">Family</option>
+						<option value="Foreign">Foreign</option>
+						<option value="Games">Games</option>
+						<option value="Horror">Horror</option>
+						<option value="Music">Music</option>
+						<option value="New">New</option>
+						<option value="Sci-Fi">Sci-Fi</option>
+						<option value="Sports">Sports</option>
+						<option value="Travel">Travel</option>	
+					</select> 
+				
+					<br>
+					<br>
 
 				<p>The film is currently rated ${film.rating}</p>
-
-				<label for="rating">Choose a new Rating:</label> <select name="rating" id="rating">
-					<option value="${film.rating}">${film.rating}</option>
-					<option value="G">G</option>
-					<option value="PG">PG</option>
-					<option value="PG13">PG13</option>
-					<option value="R">R</option>
-					<option value="NC17">NC17</option>
-				</select> <br>
-				<br>
-
+				<label for="rating" ><strong>-- Choose a New Rating --</strong></label><br> 
+					<select name="rating" id="rating">
+						<option value="${film.rating}">${film.rating}</option>
+						<option value="G">G</option>
+						<option value="PG">PG</option>
+						<option value="PG13">PG13</option>
+						<option value="R">R</option>
+						<option value="NC17">NC17</option>
+					</select> 
+					
+					<br>
+					<br>
 
 				<p>The film's language ID is: ${film.languageId}</p>
-
-				<label for="language">Choose a new Language:</label> <select name="languageName" id="language">
-					<option value="${film.languageName}">${film.languageName}</option>
-					<option value="English">English (1)</option>
-					<option value="Italian">Italian (2)</option>
-					<option value="Japanese">Japanese (3)</option>
-					<option value="Mandarin">Mandarin (4)</option>
-					<option value="French">French (5)</option>
-					<option value="German">German (6)</option>
-				</select> <br>
-				<br> 
+				<label for="rating" ><strong>-- Choose a New Language --</strong></label><br> 
+					<select name="languageName" id="language">
+						<option value="${film.languageName}">${film.languageName}</option>
+						<option value="English">English (1)</option>
+						<option value="Italian">Italian (2)</option>
+						<option value="Japanese">Japanese (3)</option>
+						<option value="Mandarin">Mandarin (4)</option>
+						<option value="French">French (5)</option>
+						<option value="German">German (6)</option>
+					</select> 
+					
+					<br>
+					<br> 
 
 				<section>
 					<h4>Cast:</h4>
@@ -171,7 +215,8 @@
 						</ul>
 					</c:forEach>
 				</section>
-				<p>Click the "Submit" to update your movie or use "DELETE FILM" to permanently remove film.</p>
+			
+				<br><p>Click "Submit" to update your movie or use "DELETE FILM" to permanently remove the film.</p>
 				<input type="submit" value="Submit"> 
 			</form>
 			<form action="DeleteFilm.do" method="POST">
@@ -180,9 +225,13 @@
 					<font color="red"><strong>DELETE FILM</strong></font>
 				</button>
 			</form>
+			
+			<form action="home.do"><input type="submit" value="Return to the Previous Page"></form>
+				
+		
 				<hr size="" width="" color="">
 			</c:forEach>
 		</c:otherwise>
-	</c:choose>
+	</c:choose>		
 </body>
 </html>

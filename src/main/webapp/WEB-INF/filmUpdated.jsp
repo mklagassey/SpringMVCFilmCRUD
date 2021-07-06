@@ -16,7 +16,7 @@
 	<c:choose>
 		<c:when test="${not empty film}">
 			<ul>
-				<li>${film.title} Good job, Flavor Flav. The film was
+				<li>Good job, Flavor Flav. ${film.title} was
 					successfully updated.</li>
 			</ul>
 		</c:when>
@@ -25,14 +25,14 @@
 		</c:otherwise>
 	</c:choose>
 	
+				<a input type="button" onClick="home.do"> Return to Home Page</a>
+	
+ 		<br>
+					<form action="home.do"><input type="submit" value="Return to the Previous Page"></form>
 
-		<p>
-			<a href="WEB-INF/result.jsp" class="btn btn-secondary" role="button">Back
-				Return to previous page</a>
-		</p>
+		<br>     
+		
 		
 </body>
 </html>
 
-
-	

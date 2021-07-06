@@ -16,7 +16,7 @@
 	<c:choose>
 		<c:when test="${not empty film}">
 			<ul>
-				<li>${film.title} Good job, Flavor Flav. The film was
+				<li>Good job, Flavor Flav.  ${film.title} was
 					successfully added.</li>
 			</ul>
 		</c:when>
@@ -24,6 +24,10 @@
 			<p>Danger Will Robinson, the film was not added!</p>
 		</c:otherwise>
 	</c:choose>
+	
+		<br>
+			<form action="home.do"><input type="submit" value="Return to the Previous Page"></form>
+		<br>
 	
 </body>
 </html>

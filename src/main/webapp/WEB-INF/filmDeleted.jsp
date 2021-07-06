@@ -25,6 +25,10 @@
 		</c:otherwise>
 	</c:choose>
 	
+		<br>
+			<form action="home.do"><input type="submit" value="Return to the Previous Page"></form>
+		<br>
+	
 </body>
 </html>
 
