@@ -42,11 +42,16 @@ public class FilmController {
 	}
 	
 	@RequestMapping(path="GetFilmData.do")
-	public ModelAndView getFilmById(@RequestParam("filmId") int id) {
+	public ModelAndView getFilmById(@RequestParam("filmId") int id) throws SQLException {
 		DatabaseAccessorObject db = new DatabaseAccessorObject();
 		ModelAndView mv = new ModelAndView();
 //		int num = Integer.parseInt(id);
-		mv.setViewName("WEB-INF/result.jsp");
+		if (db.findFilmById(id) == null || db.findFilmById(id).getTitle().isEmpty()) {
+			mv.setViewName("WEB-INF/error.jsp");
+		} else {
+
+			mv.setViewName("WEB-INF/result.jsp");
+		}
 		try {
 			mv.addObject("film", db.findFilmById(id));
 		} catch (NumberFormatException e) {
@@ -58,11 +63,16 @@ public class FilmController {
 	}
 	
 	@RequestMapping(path="GetByKeyword.do")
-	public ModelAndView getFilmByKeyword(@RequestParam("keyword") String keyword) {
+	public ModelAndView getFilmByKeyword(@RequestParam("keyword") String keyword) throws SQLException {
 		DatabaseAccessorObject db = new DatabaseAccessorObject();
 		ModelAndView mv = new ModelAndView();
 //		int num = Integer.parseInt(id);
-		mv.setViewName("WEB-INF/result.jsp");
+		if (db.findFilmsBySearchString(keyword).isEmpty()) {
+			mv.setViewName("WEB-INF/error.jsp");
+		} else {
+
+			mv.setViewName("WEB-INF/result.jsp");
+		}
 		try {
 			mv.addObject("films", db.findFilmsBySearchString(keyword));
 			System.out.println(mv.toString());
@@ -76,31 +86,13 @@ public class FilmController {
 		return mv;
 	}
 	
-	@RequestMapping(path="AddFilm.do")
-	public ModelAndView addFilm(@RequestParam("title") String title, 
-			@RequestParam("rentalDuration") int rentalDuration, @RequestParam("description") String description, @RequestParam("releaseYear") Integer releaseYear,
-			@RequestParam("rentalRate") double rentalRate, @RequestParam("length") Integer length, @RequestParam("replacementCost") double replacementCost, 
-			@RequestParam("rating") String rating, @RequestParam("specialFeatures") String specialFeatures, @RequestParam("languageName") String languageName, 
-			@RequestParam("category") String category) throws SQLException {
+	@RequestMapping(path="AddFilm.do", method=RequestMethod.POST)
+	public ModelAndView addFilm(Film film) throws SQLException {
 		DatabaseAccessorObject db = new DatabaseAccessorObject();
-		ModelAndView mv = new ModelAndView();
-		Film film = new Film();
+		ModelAndView mv = new ModelAndView();		
+						
+		mv.setViewName("WEB-INF/filmAdded.jsp");
 		
-		film.setTitle(title);
-		film.setRentalRate(rentalRate);
-		film.setRentalDuration(rentalDuration);
-		film.setDescription(description);
-		film.setLength(length);
-		film.setReplacementCost(replacementCost);
-		film.setRating(rating);
-		film.setSpecialFeatures(specialFeatures);
-		film.setLanguageName(languageName);
-		film.setCategory(category);
-		film.setReleaseYear(releaseYear);		
-		
-		System.out.println(film.getCategory());
-		
-		mv.setViewName("WEB-INF/filmUpdated.jsp");
 		try {
 			mv.addObject("film", db.createFilm(film));
 		} catch (NumberFormatException e) {
@@ -127,7 +119,7 @@ public class FilmController {
 		return mv;
 	}
 	
-	@RequestMapping(path="UpdateFilm.do")
+	@RequestMapping(path="UpdateFilm.do", method=RequestMethod.POST)
 	public ModelAndView updateFilm(@RequestParam("title") String title, @RequestParam("id") int filmId, 
 			@RequestParam("rentalDuration") int rentalDuration, @RequestParam("description") String description, @RequestParam("releaseYear") Integer releaseYear,
 			@RequestParam("rentalRate") double rentalRate, @RequestParam("length") Integer length, @RequestParam("replacementCost") double replacementCost, 

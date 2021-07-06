@@ -269,9 +269,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 //		String sql = "INSERT INTO film (title, language_id) VALUES (?, ?)";
 		Connection conn = null;
 		int langId = findLanguageByName(film.getLanguageName()); 
+	
+		System.out.println(film.getSpecialFeatures());
 		
 		  try {
-		    conn = DriverManager.getConnection(URL, user, pass);
+			  conn = DriverManager.getConnection(URL, user, pass);
 		    
 		    conn.setAutoCommit(false); // START TRANSACTION
 		    String sql = "INSERT INTO film (title, language_id, rental_duration, "
@@ -298,7 +300,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		     if (keys.next()) {
 		        int newFilmId = keys.getInt(1);
 		        film.setiD(newFilmId);
-		        createCategory(film);
+		        createCategory(film, conn);
 		    }
 		    
 		      conn.commit();           // COMMIT TRANSACTION
@@ -316,13 +318,13 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		  return film;
 	}
 	
-	public boolean createCategory(Film film) throws SQLException {
-		  Connection conn = null;
+	public boolean createCategory(Film film, Connection conn) throws SQLException {
+//		  Connection conn = null;
 		  int categoryId = findCategoryIdByName(film.getCategory());
 		  System.out.println(film.getiD());
 		  
 		try {
-		    conn = DriverManager.getConnection(URL, user, pass);
+//		    conn = DriverManager.getConnection(URL, user, pass);
 		    
 		    conn.setAutoCommit(false); // START TRANSACTION
 		    String sql = "INSERT INTO film_category (category_id, film_id) VALUES (?, ?)";
@@ -365,6 +367,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		    PreparedStatement stmt = conn.prepareStatement(sql);
 		    stmt.setInt(1, film.getiD());
 		    
+		    deleteCategory(film, conn);
+		    
 		    int uc = stmt.executeUpdate();
 		    
 		    if (uc != 1) {
@@ -385,6 +389,44 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		    return film;
 		  }
 		  return null;
+	}
+	
+	public boolean deleteCategory(Film film, Connection conn) throws SQLException {
+//		  Connection conn = null;
+//		  int categoryId = findCategoryIdByName(film.getCategory());
+//		  System.out.println(film.getiD());
+		  
+		try {
+//		    conn = DriverManager.getConnection(URL, user, pass);
+		    
+		    conn.setAutoCommit(false); // START TRANSACTION
+		    String sql = "DELETE FROM film_category WHERE film_id = ?";
+		    
+		    PreparedStatement stmt = conn.prepareStatement(sql);
+//		    stmt.setInt(1, categoryId);
+		    stmt.setInt(1, film.getiD());
+		    System.out.println("from inside delete category the sql string is: " + sql);
+		    
+		    int uc = stmt.executeUpdate();
+		    
+		    if (uc != 1) {
+				System.err.println("We done goofed inside deleteCategory!");
+				conn.rollback();
+				return false;
+			}
+		    conn.commit();             // COMMIT TRANSACTION
+		  }
+		  catch (SQLException sqle) {
+		    sqle.printStackTrace();
+		    if (conn != null) {
+		      try { conn.rollback(); }
+		      catch (SQLException sqle2) {
+		        System.err.println("Error trying to rollback");
+		      }
+		    }
+		    return false;
+		  }
+		  return true;
 	}
 	
 	public boolean updateCategory(Film film) throws SQLException {

@@ -22,23 +22,22 @@
 				Rental Rate <input type="text" name="rentalRate" value="${film.rentalRate}" /> <br>
 				Length <input type="text" name="length" value="${film.length}" /> <br>
 				Replacement Cost <input type="text" name="replacementCost" value="${film.replacementCost}" /><br>
-<!--  			Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" /> <br>     -->
 				Rental Duration <input type="text" name="rentalDuration" value="${film.rentalDuration}" /><br>
 				
 				<br>
 				
 				<p>The current special features include: ${film.specialFeatures}</p>
 				<p><strong>-- Choose New Special Features --</strong></p>
-					<form action="WEB-INF/filmUpdated.jsp"> 
-						<input type="checkbox" id="special_feature_deleted_scenes" name="deleted_scenes" value="${film.specialFeatures}">
+<!-- 						<input id="special_feature_commentaries" name="specialFeatures" value="">
+ -->  						<input type="checkbox" id="special_feature_deleted_scenes" name="specialFeatures" value="deleted scenes" <c:if test="${film.specialFeatures.contains('Deleted Scenes') }">checked</c:if> >
 						<label for="special_feature_deleted_scenes">Deleted Scenes</label><br>					
-						<input type="checkbox" id="special_feature_behind_the_scenes" name="behind_the_scenes" value="${film.specialFeatures}">
+						<input type="checkbox" id="special_feature_behind_the_scenes" name="specialFeatures" value="behind the scenes" <c:if test="${film.specialFeatures.contains('Behind the Scenes') }">checked</c:if> >
 						<label for="special_feature_behind_the_scenes">Behind the Scenes</label><br>				
-						<input type="checkbox" id="special_feature_trailers" name="trailers" value="${film.specialFeatures}">
+						<input type="checkbox" id="special_feature_trailers" name="specialFeatures" value="trailers" <c:if test="${film.specialFeatures.contains('Trailers') }">checked</c:if> >
 						<label for="special_feature_trailers">Trailers</label><br>					
-						<input type="checkbox" id="special_feature_commentaries" name="commentaries" value="${film.specialFeatures}">
+						<input type="checkbox" id="special_feature_commentaries" name="specialFeatures" value="commentaries" <c:if test="${film.specialFeatures.contains('Commentaries') }">checked</c:if> >
 						<label for="special_feature_commentaries">Commentaries</label><br>	
-					</form> 
+						
 					
 					<br>
 				
@@ -106,6 +105,7 @@
 				<p>Click "Submit" to update your movie or use "DELETE FILM" to permanently remove the film.</p>
 				<input type="submit" value="Submit"> 
 			</form>
+			
 			<form action="DeleteFilm.do" method="POST">
 				<input value="${film.iD}" type="hidden" name="id">
 				<button>
@@ -115,7 +115,7 @@
 			
 			</form>
 				<br>
-			<form action="home.do"><input type="submit" value="Return to the Previous Page"></form>
+			<form action="home.do"><input type="submit" value="Return to the Home Page"></form>
 				<br>
 		</c:when>
 
@@ -134,26 +134,26 @@
 				Rental Rate <input type="text" name="rentalRate" value="${film.rentalRate}" /> <br>
 				Length <input type="text" name="length" value="${film.length}" /> <br>
 				Replacement Cost <input type="text" name="replacementCost" value="${film.replacementCost}" /><br>
-<!-- 			Special Features <input type="text" name="specialFeatures" value="${film.specialFeatures}" /> <br>        -->
 				Rental Duration <input type="text" name="rentalDuration" value="${film.rentalDuration}" /><br>
 				
+				<br>
+				
+				<p>The current special features include: ${film.specialFeatures}</p>
+				<p><strong>-- Choose New Special Features --</strong></p>
+<!-- 						<input id="special_feature_commentaries" name="specialFeatures" value="">
+ -->  						<input type="checkbox" id="special_feature_deleted_scenes" name="specialFeatures" value="deleted scenes" <c:if test="${film.specialFeatures.contains('Deleted Scenes') }">checked</c:if> >
+						<label for="special_feature_deleted_scenes">Deleted Scenes</label><br>					
+						<input type="checkbox" id="special_feature_behind_the_scenes" name="specialFeatures" value="behind the scenes" <c:if test="${film.specialFeatures.contains('Behind the Scenes') }">checked</c:if> >
+						<label for="special_feature_behind_the_scenes">Behind the Scenes</label><br>				
+						<input type="checkbox" id="special_feature_trailers" name="specialFeatures" value="trailers" <c:if test="${film.specialFeatures.contains('Trailers') }">checked</c:if> >
+						<label for="special_feature_trailers">Trailers</label><br>					
+						<input type="checkbox" id="special_feature_commentaries" name="specialFeatures" value="commentaries" <c:if test="${film.specialFeatures.contains('Commentaries') }">checked</c:if> >
+						<label for="special_feature_commentaries">Commentaries</label><br>	
+						
+					
 					<br>
-
-			<p>The current special features include: ${film.specialFeatures}</p>
-			<p><strong>-- Choose New Special Features --</strong></p>
-				<form action="WEB-INF/filmUpdated.jsp"> 
-					<input type="checkbox" id="special_feature_deleted_scenes" name="deleted_scenes" value="${film.specialFeatures}">
-					<label for="special_feature_deleted_scenes">Deleted Scenes</label><br>					
-					<input type="checkbox" id="special_feature_behind_the_scenes" name="behind_the_scenes" value="${film.specialFeatures}">
-					<label for="special_feature_behind_the_scenes">Behind the Scenes</label><br>				
-					<input type="checkbox" id="special_feature_trailers" name="trailers" value="${film.specialFeatures}">
-					<label for="special_feature_trailers">Trailers</label><br>					
-					<input type="checkbox" id="special_feature_commentaries" name="commentaries" value="${film.specialFeatures}">
-					<label for="special_feature_commentaries">Commentaries</label><br>	
-					</form> 
 				
 				<p>The category is: ${film.category}</p>
-
 				<label for="rating" ><strong>-- Choose a New Category --</strong></label><br> 
 					<select name="category" id="category">
 						<option value="${film.category}">${film.category}</option>
@@ -172,14 +172,13 @@
 						<option value="New">New</option>
 						<option value="Sci-Fi">Sci-Fi</option>
 						<option value="Sports">Sports</option>
-						<option value="Travel">Travel</option>	
+						<option value="Travel">Travel</option>
 					</select> 
-				
-					<br>
+					
 					<br>
 
 				<p>The film is currently rated ${film.rating}</p>
-				<label for="rating" ><strong>-- Choose a New Rating --</strong></label><br> 
+				<label for="rating"><strong>-- Choose a New Rating --</strong></label><br> 
 					<select name="rating" id="rating">
 						<option value="${film.rating}">${film.rating}</option>
 						<option value="G">G</option>
@@ -188,12 +187,11 @@
 						<option value="R">R</option>
 						<option value="NC17">NC17</option>
 					</select> 
-					
-					<br>
+
 					<br>
 
 				<p>The film's language ID is: ${film.languageId}</p>
-				<label for="rating" ><strong>-- Choose a New Language --</strong></label><br> 
+				<label for="language"><strong>-- Choose a New Language --</strong></label><br> 
 					<select name="languageName" id="language">
 						<option value="${film.languageName}">${film.languageName}</option>
 						<option value="English">English (1)</option>
@@ -203,7 +201,7 @@
 						<option value="French">French (5)</option>
 						<option value="German">German (6)</option>
 					</select> 
-					
+				
 					<br>
 					<br> 
 
@@ -215,18 +213,22 @@
 						</ul>
 					</c:forEach>
 				</section>
-			
-				<br><p>Click "Submit" to update your movie or use "DELETE FILM" to permanently remove the film.</p>
+				<br>
+				<p>Click "Submit" to update your movie or use "DELETE FILM" to permanently remove the film.</p>
 				<input type="submit" value="Submit"> 
 			</form>
+			
 			<form action="DeleteFilm.do" method="POST">
 				<input value="${film.iD}" type="hidden" name="id">
 				<button>
 					<font color="red"><strong>DELETE FILM</strong></font>
 				</button>
-			</form>
+				<br>
 			
-			<form action="home.do"><input type="submit" value="Return to the Previous Page"></form>
+			</form>
+				<br>
+			<form action="home.do"><input type="submit" value="Return to the Home Page"></form>
+				<br>
 				
 		
 				<hr size="" width="" color="">

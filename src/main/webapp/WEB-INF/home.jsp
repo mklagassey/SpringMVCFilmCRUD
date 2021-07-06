@@ -36,28 +36,27 @@
 	
 	<h3 style="border: 1px; border-style: solid; border-color: black; padding: .2em; width: fit-content;">Enter New Film Data:</h3>	
 	<form action="AddFilm.do" method="POST">
-		Title <input type="text" name="title" value="" /> <br>
-				Description <input type="text" name="description" value="" /><br>
-				Release Year <input type="text" name="releaseYear" value="" /><br>
-				Rental Rate <input type="text" name="rentalRate" value="" /> <br>
-				Length <input type="text" name="length" value="" /> <br>
-				Replacement Cost <input type="text" name="replacementCost" value="" /><br>
+		Title <input type="text" name="title" value="title" /> <br>
+				Description <input type="text" name="description" value="description" /><br>
+				Release Year <input type="text" name="releaseYear" value="1990" /><br>
+				Rental Rate <input type="text" name="rentalRate" value="1.00" /> <br>
+				Length <input type="text" name="length" value="90" /> <br>
+				Replacement Cost <input type="text" name="replacementCost" value="1.00" /><br>
 <!--  			Special Features <input type="text" name="specialFeatures" value="" /> <br>     -->
-				Rental Duration <input type="text" name="rentalDuration" value="" />
+				Rental Duration <input type="text" name="rentalDuration" value="3" />
 				
 				<br>
 				
 				<p><strong>-- Choose the Special Features --</strong></p>
 <!--  				<form action="WEB-INF/filmUpdated.jsp">   -->
-					<input type="checkbox" id="special_feature_deleted_scenes" name="deleted_scenes" value="${film.specialFeatures}">
-					<label for="special_feature_deleted_scenes">Deleted Scenes</label><br>					
-					<input type="checkbox" id="special_feature_behind_the_scenes" name="behind_the_scenes" value="${film.specialFeatures}">
-					<label for="special_feature_behind_the_scenes">Behind the Scenes</label><br>				
-					<input type="checkbox" id="special_feature_trailers" name="trailers" value="${film.specialFeatures}">
-					<label for="special_feature_trailers">Trailers</label><br>					
-					<input type="checkbox" id="special_feature_commentaries" name="commentaries" value="${film.specialFeatures}">
-					<label for="special_feature_commentaries">Commentaries</label><br>	
-				</form> 
+					<input type="checkbox" id="special_feature_deleted_scenes" name="specialFeatures" value="deleted scenes" <c:if test="${film.specialFeatures.contains('Deleted Scenes') }">checked</c:if> >
+						<label for="special_feature_deleted_scenes">Deleted Scenes</label><br>					
+						<input type="checkbox" id="special_feature_behind_the_scenes" name="specialFeatures" value="behind the scenes" <c:if test="${film.specialFeatures.contains('Behind the Scenes') }">checked</c:if> >
+						<label for="special_feature_behind_the_scenes">Behind the Scenes</label><br>				
+						<input type="checkbox" id="special_feature_trailers" name="specialFeatures" value="trailers" <c:if test="${film.specialFeatures.contains('Trailers') }">checked</c:if> >
+						<label for="special_feature_trailers">Trailers</label><br>					
+						<input type="checkbox" id="special_feature_commentaries" name="specialFeatures" value="commentaries" <c:if test="${film.specialFeatures.contains('Commentaries') }">checked</c:if> >
+						<label for="special_feature_commentaries">Commentaries</label><br>	
 					
 					<br>
 				
@@ -109,7 +108,6 @@
 					<br>
 					<br>
 					
-			<form>	
 				<input type="submit" value="Submit"> 		
 			</form>
 	

@@ -28,7 +28,7 @@
 				<a input type="button" onClick="home.do"> Return to Home Page</a>
 	
  		<br>
-					<form action="home.do"><input type="submit" value="Return to the Previous Page"></form>
+					<form action="home.do"><input type="submit" value="Return to the Home Page"></form>
 
 		<br>     
 		
